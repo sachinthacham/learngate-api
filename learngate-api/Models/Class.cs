@@ -4,12 +4,19 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int capacity { get; set; }
+        public int Capacity { get; set; }
         public int SupervisorId { get; set; }
-        public Teacher Supervisor { get; set; } 
-        public List<Lesson> Lessons { get; set; }
-        public List<Student> Students { get; set; }
         public int GradeId { get; set; }
+
+
+
         public Grade Grade { get; set; }
+        public Teacher Supervisor { get; set; }
+
+        
+        public List<Event> Events { get; set; } = new List<Event>();
+        public List<Announcement> Announcements { get; set; } = new List<Announcement>();
+        public List<Lesson> Lessons { get; set; } = new List<Lesson>();
+        public List<Student> Students { get; set; } = new List<Student>();
     }
 }

@@ -16,11 +16,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//add authdbcontext
+//adding authdbcontext
 builder.Services.AddDbContext<AuthDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnection")));
 
-builder.Services.AddScoped<ITokenRepository, TokenRepository>();    
+// adding learnGatedbContext
+builder.Services.AddDbContext<LearnGateDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<ISubjectRepository, EFSubjectRepository>();
 
 //inject identity
 builder.Services.AddIdentityCore<IdentityUser>()

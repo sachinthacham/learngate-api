@@ -10,7 +10,7 @@
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Name { get; set; }
-        public string surname { get; set; }
+        public string Surname { get; set; }
         public string? Email { get; set;}
 
         public string? Phone { get; set; }
@@ -29,6 +29,11 @@
 
         public int GradeId { get; set; }
         public Grade Grade { get; set; }
+
+        public List<Attendance> Attendances { get; set; } = new List<Attendance>();
+
+        public List<Result> Results { get; set; } = new List<Result>();
+        public List<Assignment> Assignment { get; set; }
     
     }
 }
