@@ -1,4 +1,5 @@
 ﻿using learngate_api.Contracts;
+using learngate_api.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,8 @@ namespace learngate_api.Controllers
             try
             {
                 var subjects = await _subjectRepository.GetAllSubjectsAsync();
-                return Ok(subjects);
+                var subjectsDto = subjects.Select(s => s.ToSubjectDto());
+                return Ok(subjectsDto);
             }
             catch (Exception ex)
             {
