@@ -2,6 +2,7 @@
 using learngate_api.DTOs.AnnouncementDto;
 using learngate_api.DTOs.ParentDto;
 using learngate_api.Mappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -11,6 +12,7 @@ namespace learngate_api.Controllers
 {
     [Route("api/parent")]
     [ApiController]
+    [Authorize]
     public class ParentController : ControllerBase
     {
         private readonly IParentRepository _parentRepository;

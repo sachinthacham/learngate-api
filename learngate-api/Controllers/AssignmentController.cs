@@ -1,4 +1,4 @@
-﻿using learngate_api.Contracts;
+﻿/*using learngate_api.Contracts;
 using learngate_api.DTOs.AssignmentDto;
 using learngate_api.Mappers;
 using Microsoft.AspNetCore.Http;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace learngate_api.Controllers
 {
-    [Route("api/assignmnet")]
+    [Route("api/assignment")]
     [ApiController]
     public class AssignmentController : ControllerBase
     {
@@ -118,7 +118,7 @@ namespace learngate_api.Controllers
 
     }
 }
-
+*/
 
 
 

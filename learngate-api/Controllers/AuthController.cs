@@ -45,13 +45,14 @@ namespace learngate_api.Controllers
 
                     if (identityResult.Succeeded)
                     {
-                        return Ok("User was registered.Please log in");
+                        return Ok(new { message = "User was registered.Please log in" });
                     }
 
                 }
 
              }
-            return BadRequest("something went wrong");
+            return BadRequest(new { message = "something went wrong" });
+
         }
 
 
