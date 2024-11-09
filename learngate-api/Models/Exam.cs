@@ -6,6 +6,11 @@
         public string Title { get; set; }   
         public DateTime StartTime {  get; set; }
         public DateTime EndTime { get; set; }
+        public int ClassId { get; set; }
+        public Class Class { get; set; }
+
+        public int SubjectId { get; set; }
+        public Subject Subject { get; set; }
         public int LessonID { get; set; }
         public Lesson Lesson { get; set; } 
         

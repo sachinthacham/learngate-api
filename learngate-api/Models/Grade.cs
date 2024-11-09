@@ -5,7 +5,5 @@
         public int Id { get; set; }
         public int Level { get; set; }
 
-        public List<Student> students { get; set; } = new List<Student>();
-        public List<Class> classes { get; set; } = new List<Class>();
     }
 }

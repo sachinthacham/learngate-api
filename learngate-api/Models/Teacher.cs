@@ -20,5 +20,10 @@
 
         public List<Class> Classs { get; set; } = new List<Class>();
 
+
+
+        //subject teacher join table
+        public ICollection<TeacherSubject> TeacherSubjects { get; set; } = new List<TeacherSubject>();
+
     }
 }

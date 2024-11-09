@@ -6,10 +6,9 @@
         public int Score { get; set; }
         public int? ExamId { get; set; }
         public int? AssignmentId { get; set; }
-        public Exam? Exam { get; set; }
-        public Assignment? Assignment { get; set; }
-
         public int StudentId { get; set; }
+        public Exam? Exam { get; set; }
+        //public Assignment? Assignment { get; set; }
         public Student Student { get; set; }
 
 

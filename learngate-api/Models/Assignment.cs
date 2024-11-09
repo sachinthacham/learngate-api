@@ -1,4 +1,4 @@
-﻿namespace learngate_api.Models
+﻿/*namespace learngate_api.Models
 {
     public class Assignment
     {
@@ -11,3 +11,4 @@
         public List<Result> Results { get; set; } = new List<Result>();
     }
 }
+*/

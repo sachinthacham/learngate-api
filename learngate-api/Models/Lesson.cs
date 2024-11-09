@@ -22,10 +22,10 @@
         public Class Class { get; set; }
 
         public int TeacherId { get; set; }
-        public Teacher Teachers { get; set; }
+        public Teacher Teacher { get; set; }
 
         public List<Exam> Exams { get; set; }=new List<Exam>();
-        public List<Assignment> assignments { get; set; } = new List<Assignment>();
+        //public List<Assignment> assignments { get; set; } = new List<Assignment>();
 
         public List<Attendance> Attendances { get; set; }
 
