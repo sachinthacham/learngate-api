@@ -1,5 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using learngate_api.Contracts;
+using learngate_api.DTOs.AnnouncementDto;
+using learngate_api.DTOs.StudentDto;
+using learngate_api.Mappers;
+using learngate_api.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Numerics;
 
 namespace learngate_api.Controllers
 {
@@ -7,5 +14,121 @@ namespace learngate_api.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        private readonly IStudentRepository _studentRepository;
+        public StudentController(IStudentRepository studentRepository)
+        {
+            _studentRepository = studentRepository;
+        }
+
+        [HttpGet]
+        [Route("getAll")]
+
+        public async Task<IActionResult> GetAllStudent()
+        {
+            try
+            {
+                var allStudent = await _studentRepository.GetAllStudentsAsync();
+                var StudentDto = allStudent.Select(s => s.ToStudentDto());
+                return Ok(StudentDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("getby/{Id}")]
+
+        public async Task<IActionResult> GetStudentById(int Id)
+        {
+            try
+            {
+                var student = await _studentRepository.GetStudentByIdAsync(Id);
+                if(student == null)
+                {
+                    return NotFound("There are no students");
+                }
+                return Ok(student);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("create")]
+
+        public async Task<IActionResult> CreateStudent([FromBody] CreateStudentDto studentDto)
+        {
+            try
+            {
+                var newStudent = await _studentRepository.CreateStudentAsync(studentDto.ToStudentModel());
+                var newStudentDto = newStudent.ToStudentDto();
+                return CreatedAtAction(nameof(GetStudentById), new { id = newStudent.Id }, newStudentDto);
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Route("update/{Id}")]
+
+        public async Task<IActionResult> UpdateAnnouncement([FromRoute] int Id, [FromBody] UpdateStudentDto updateDto)
+        {
+            try
+            {
+                var excistingModel = await _studentRepository.GetStudentByIdAsync(Id);
+                if (excistingModel == null)
+                {
+                    return NotFound("There are no Student found");
+                }
+                excistingModel.UserName = updateDto.UserName;
+                excistingModel.Name = updateDto.Name;
+                excistingModel.Surname = updateDto.Surname;
+                excistingModel.Email = updateDto.Email;
+                excistingModel.Phone = updateDto.Phone;
+                excistingModel.Address = updateDto.Address;
+                excistingModel.Img = updateDto.Img;
+                excistingModel.BloodType = updateDto.BloodType;
+                excistingModel.GradeId = updateDto.GradeId;
+                excistingModel.Sex = updateDto.Sex;
+                excistingModel.ParentId = updateDto.ParentId;
+                excistingModel.ClassId = updateDto.ClassId;
+
+                await _studentRepository.UpdateStudentAsync(excistingModel);
+                var studentDto = excistingModel.ToStudentDto();
+                return Ok(studentDto);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("delete/{Id}")]
+
+        public async Task<IActionResult> DeleteStudent([FromRoute] int Id)
+        {
+            try
+            {
+
+                var deletedStudent = await _studentRepository.DeleteStudentAsync(Id);
+                var deletedStudentDto = deletedStudent.ToStudentDto();
+                return Ok(deletedStudentDto);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

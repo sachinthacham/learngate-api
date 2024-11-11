@@ -88,7 +88,7 @@ namespace learngate_api.Controllers
                 }
                 excistingModel.Score = updateDto.Score;
                 excistingModel.ExamId = updateDto.ExamId;
-                excistingModel.AssignmentId = updateDto.AssignmentId;
+                //excistingModel.AssignmentId = updateDto.AssignmentId;
                 excistingModel.StudentId = updateDto.StudentId;
 
                 await _resultRepository.UpdateResultAsync(excistingModel);

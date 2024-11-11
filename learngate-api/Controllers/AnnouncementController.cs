@@ -10,7 +10,7 @@ namespace learngate_api.Controllers
 {
     [Route("api/announcement")]
     [ApiController]
-    [Authorize]
+
     
     public class AnnouncementController : ControllerBase
     {

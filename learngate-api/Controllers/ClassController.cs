@@ -4,6 +4,7 @@ using learngate_api.DTOs.ClassDto;
 using learngate_api.Mappers;
 using learngate_api.Models;
 using learngate_api.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace learngate_api.Controllers
 {
     [Route("api/class")]
     [ApiController]
+    
     public class ClassController : ControllerBase
     {
         private readonly IClassRepository _classRepository;
@@ -40,7 +42,7 @@ namespace learngate_api.Controllers
 
         [HttpGet]
         [Route("getBy/{Id}")]
-
+        
         public async Task<IActionResult> GetClassById([FromRoute] int Id)
         {
             try
@@ -51,6 +53,24 @@ namespace learngate_api.Controllers
                     return NotFound();
                 }
                 var getClassDto = getclass.ToClassDto;
+                return Ok(getClassDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("getbyGradeId/{gradeId}")]
+        public async Task<IActionResult> GetClassesByGradeId([FromRoute] int gradeId)
+        {
+            try
+            {
+                var getclasses = await _classRepository.GetClassesByGradeIdAsync(gradeId);
+               
+                var getClassDto = getclasses.Select(s => s.ToClassDto());
                 return Ok(getClassDto);
             }
             catch (Exception ex)
