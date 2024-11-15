@@ -22,20 +22,36 @@ namespace learngate_api.Controllers
 
         [HttpGet]
         [Route("getAll")]
-
-        public async Task<IActionResult> GetAllStudent()
+        public async Task<IActionResult> GetAllStudent(
+            [FromQuery] string? search = null,
+            [FromQuery] int? classId = null,
+            [FromQuery] int? gradeId = null,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
             try
             {
-                var allStudent = await _studentRepository.GetAllStudentsAsync();
-                var StudentDto = allStudent.Select(s => s.ToStudentDto());
-                return Ok(StudentDto);
+                var allStudents = await _studentRepository.GetAllStudentsAsync(search, classId, gradeId, pageNumber, pageSize);
+
+                var studentDtos = allStudents.Select(s => s.ToStudentDto());
+
+                return Ok(new
+                {
+                    Data = studentDtos,
+                    Pagination = new
+                    {
+                        PageNumber = pageNumber,
+                        PageSize = pageSize,
+                        TotalCount = await _studentRepository.GetTotalCountAsyncForFilter(search, classId, gradeId) // Add total count for pagination
+                    }
+                });
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
+
 
         [HttpGet]
         [Route("getby/{Id}")]

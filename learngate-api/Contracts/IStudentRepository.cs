@@ -4,10 +4,18 @@ namespace learngate_api.Contracts
 {
     public interface IStudentRepository
     {
-        Task<List<Student>> GetAllStudentsAsync();
+        Task<List<Student>> GetAllStudentsAsync(string? search,
+            int? classId,
+            int? gradeId,
+            int pageNumber = 1,
+            int pageSize = 10);
         Task<Student?> GetStudentByIdAsync(int Id);
         Task<Student> CreateStudentAsync(Student student);
         Task<Student> UpdateStudentAsync(Student student);
         Task <Student> DeleteStudentAsync(int Id);
+        Task<int> TotalStudentCountAsync();
+        Task<int> GetTotalCountAsyncForFilter(string? search, int? classId, int? gradeId);
+
+
     }
 }

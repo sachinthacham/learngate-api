@@ -9,5 +9,6 @@ namespace learngate_api.Contracts
         Task<Parent> CreateParentAsync(Parent parent);
         Task<Parent> UpdateParentAsync(Parent parent);
         Task<Parent> DeleteParentAsync(int id);
+        Task<int> GetParentCountAsync();
     }
 }
