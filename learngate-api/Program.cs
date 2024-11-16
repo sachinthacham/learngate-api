@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,39 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+//this is the code for setup swagger to check authorize
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "LearnGate API", Version = "v1" });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {{
+    new OpenApiSecurityScheme
+    {
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = JwtBearerDefaults.AuthenticationScheme
+        },
+        Scheme = "Oauth2",
+        Name = JwtBearerDefaults.AuthenticationScheme,
+        In = ParameterLocation.Header
+    },
+    new List<string>()
+        }
+});
+});
+
+
+
 
 //adding authdbcontext
 builder.Services.AddDbContext<AuthDbContext>(options =>
@@ -24,8 +58,27 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnection")
 builder.Services.AddDbContext<LearnGateDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//adding repositories
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<IAnnouncementRepository, EFAnnouncementRepository>();
+
+builder.Services.AddScoped<IAttendanceRepository, EFAttendanceRepository>();
+builder.Services.AddScoped<IClassRepository, EFClassRepository>();
+builder.Services.AddScoped<IEventRepository, EFEventRepository>();
+builder.Services.AddScoped<IExamRepository, EFExamRepository>();
+builder.Services.AddScoped<IGradeRepository, EFGradeRepository>();
+builder.Services.AddScoped<ILessonRepository, EFLessonRepository>();
+builder.Services.AddScoped<IParentRepository, EFParentRepository>();
+builder.Services.AddScoped<IResultRepository, EFResultRepository>();
+builder.Services.AddScoped<IStudentRepository, EFStudentRepository>();
 builder.Services.AddScoped<ISubjectRepository, EFSubjectRepository>();
+builder.Services.AddScoped<ITeacherRepository, EFTeacherRepository>();
+builder.Services.AddScoped<IClassSubjectRepository, EFClassSubjectRepository>();
+builder.Services.AddScoped<IPaymentRepository, EFPaymentRepository>();
+
+//stripe payment configuration
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
 
 //inject identity
 builder.Services.AddIdentityCore<IdentityUser>()
@@ -58,8 +111,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         });
 
-
-
+//To solve cors errors
+builder.Services.AddCors(builder =>
+{
+    builder.AddPolicy("AllowAll", options =>
+    {
+        options.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 
 
@@ -72,8 +133,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 //app.UseHttpsRedirection();
 
+
+
+app.UseCors("AllowAll");
 //this line should be include before UseAuthorization()
 app.UseAuthentication();
 
