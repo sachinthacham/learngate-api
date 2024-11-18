@@ -14,6 +14,13 @@ namespace learngate_api.Repositories
             _context = context;
         }
 
+        
+
+        public async Task<int> GetParentCountAsync()
+        {
+            var totalCount = await _context.Parents.CountAsync();
+            return totalCount;
+        }
         public async Task<List<Parent>> GetAllParentsAsync()
         {
             return await _context.Parents.Include(x => x.Students).ToListAsync();
