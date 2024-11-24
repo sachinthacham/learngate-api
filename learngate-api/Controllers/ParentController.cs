@@ -12,7 +12,7 @@ namespace learngate_api.Controllers
 {
     [Route("api/parent")]
     [ApiController]
-    [Authorize]
+  
     public class ParentController : ControllerBase
     {
         private readonly IParentRepository _parentRepository;

@@ -1,5 +1,6 @@
 ﻿using learngate_api.Contracts;
 using learngate_api.DTOs;
+using learngate_api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,20 +15,28 @@ namespace learngate_api.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ITokenRepository _tokenRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly ITeacherRepository _teacherRepository;
 
-        public AuthController(UserManager<IdentityUser> userManager,ITokenRepository tokenRepository)
+        public AuthController(UserManager<IdentityUser> userManager,
+            ITokenRepository tokenRepository,
+            IStudentRepository studentRepository,
+            ITeacherRepository teacherRepository
+            )
         {
             _userManager = userManager;
             _tokenRepository = tokenRepository;
+            _studentRepository = studentRepository;
+            _teacherRepository = teacherRepository;
         }
 
 
 
-     //POST: /api/Auth?Register
+         
         [HttpPost]
-        [Route("Register")]
+        [Route("studentRegister")]
 
-        public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
+        public async Task<IActionResult> RegisterStudent([FromBody] StudentRegisterRequestDto registerRequestDto)
         {
             var identityUser = new IdentityUser
             {
@@ -45,16 +54,81 @@ namespace learngate_api.Controllers
 
                     if (identityResult.Succeeded)
                     {
+                        if(registerRequestDto.Roles.Any(x => x.Equals("Student", StringComparison.OrdinalIgnoreCase)))
+                        {
+                            var student = new Student
+                            {
+                                UserName = registerRequestDto.Username,
+                                Name = registerRequestDto.Name,
+                                Surname = registerRequestDto.Surname,
+                                Email = registerRequestDto.Email,
+                                Phone = registerRequestDto.Phone,
+                                Address = registerRequestDto.Address,
+                                Img = registerRequestDto.Img,
+                                BloodType = registerRequestDto.BloodType,
+                                GradeId = registerRequestDto.GradeId,
+                                Sex = registerRequestDto.Sex,
+                                ParentId = registerRequestDto.ParentId,
+                                ClassId = registerRequestDto.ClassId,
+                            };
+                            await _studentRepository.CreateStudentAsync(student);
+                        }
+
                         return Ok(new { message = "User was registered.Please log in" });
                     }
 
                 }
 
-             }
+            }
             return BadRequest(new { message = "something went wrong" });
 
         }
 
+
+        [HttpPost]
+        [Route("teacherRegister")]
+
+        public async Task<IActionResult> RegisterTeacher([FromBody] TeacherRegisterRequestDto registerRequestDto)
+        {
+            var identityUser = new IdentityUser
+            {
+                UserName = registerRequestDto.Username,
+                Email = registerRequestDto.Username
+            };
+
+            var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDto.Password);
+
+            if (identityResult.Succeeded)
+            {
+                if (registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
+                {
+                    identityResult = await _userManager.AddToRolesAsync(identityUser, registerRequestDto.Roles);
+
+                    if (identityResult.Succeeded)
+                    {
+                            var teacher = new Teacher
+                            {
+                                UserName = registerRequestDto.Username,
+                                Name = registerRequestDto.Name,
+                                Surname = registerRequestDto.Surname,
+                                Email = registerRequestDto.Email,
+                                Phone = registerRequestDto.Phone,
+                                Address = registerRequestDto.Address,
+                                Img = registerRequestDto.Img,
+                                BloodType = registerRequestDto.BloodType,
+                                Sex = registerRequestDto.Sex,
+                                TeacherSubjects = new List<TeacherSubject>(),
+                            };
+                            await _teacherRepository.CreateTeacherAsync(teacher, registerRequestDto.SubjectIds);
+                            return Ok(new { message = "User was registered.Please log in" });
+                    }
+
+                }
+
+            }
+            return BadRequest(new { message = "something went wrong" });
+
+        }
 
         [HttpPost]
         [Route("Login")]
@@ -78,18 +152,10 @@ namespace learngate_api.Controllers
                         };
                         return Ok(response);
                     }
-                    
-                    
                 }
             }
 
             return BadRequest("Usename or password incorrect");
         }
-
-
-
-
-
-
     }
 }

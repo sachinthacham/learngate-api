@@ -36,6 +36,22 @@ namespace learngate_api.Controllers
         }
 
         [HttpGet]
+        [Route("getRecent")]
+        public async Task<IActionResult> GetRecentEventsAsync()
+        {
+            try
+            {
+                var allEvents = await _eventRepository.GetRecentEventsAsync();
+                var eventDto = allEvents.Select(s => s.ToEventDto());
+                return Ok(eventDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("getby/{Id}")]
 
         public async Task<IActionResult> GetEventById(int Id)

@@ -54,18 +54,18 @@ namespace learngate_api.Controllers
 
 
         [HttpGet]
-        [Route("getby/{Id}")]
+        [Route("getby/{username}")]
 
-        public async Task<IActionResult> GetStudentById(int Id)
+        public async Task<IActionResult> GetStudentById(string username)
         {
             try
             {
-                var student = await _studentRepository.GetStudentByIdAsync(Id);
+                var student = await _studentRepository.GetStudentByIdAsync(username);
                 if(student == null)
                 {
                     return NotFound("There are no students");
                 }
-                return Ok(student);
+                return Ok(student.ToStudentProfileDto());
             }
             catch (Exception ex)
             {
@@ -95,11 +95,11 @@ namespace learngate_api.Controllers
         [HttpPut]
         [Route("update/{Id}")]
 
-        public async Task<IActionResult> UpdateAnnouncement([FromRoute] int Id, [FromBody] UpdateStudentDto updateDto)
+        public async Task<IActionResult> UpdateAnnouncement([FromRoute] string username, [FromBody] UpdateStudentDto updateDto)
         {
             try
             {
-                var excistingModel = await _studentRepository.GetStudentByIdAsync(Id);
+                var excistingModel = await _studentRepository.GetStudentByIdAsync(username);
                 if (excistingModel == null)
                 {
                     return NotFound("There are no Student found");

@@ -19,7 +19,7 @@ namespace learngate_api.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
+        [Route("getAll")] 
 
         public async Task<IActionResult> GetAllAnnouncements()
         {
@@ -27,6 +27,23 @@ namespace learngate_api.Controllers
             {
                 var allLessons = await _lessonRepository.GetAllLessonsAsync();
                 var lessonDto = allLessons.Select(s => s.ToLessonDto());
+                return Ok(lessonDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("getlessons/{classSubjectId}")] 
+
+        public async Task<IActionResult> GetAllAnnouncements([FromRoute] int classSubjectId)
+        {
+            try
+            {
+                var allLessons = await _lessonRepository.GetLessonByClassSubjectIdAsync(classSubjectId);
+                var lessonDto = allLessons.Select(s => s.ToLessonsForSubjectDto());
                 return Ok(lessonDto);
             }
             catch (Exception ex)
