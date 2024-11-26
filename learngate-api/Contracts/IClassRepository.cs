@@ -6,6 +6,7 @@ namespace learngate_api.Contracts
     {
         Task<List<Class>> GetAllClassesAsync();
         Task<Class?> GetClassByIdAsync(int Id);
+        Task<List<Class>> GetClassesByGradeIdAsync(int gradeId);
         Task<Class> CreateClassAsync(Class newclass);
         Task<Class> UpdateClassAsync(Class newclass);
         Task<Class> DeleteClassAsync(int id);

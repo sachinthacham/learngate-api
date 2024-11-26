@@ -9,12 +9,15 @@ namespace learngate_api.Contracts
             int? gradeId,
             int pageNumber = 1,
             int pageSize = 10);
-        Task<Student?> GetStudentByIdAsync(int Id);
+        Task<Student?> GetStudentByIdAsync(string username);
         Task<Student> CreateStudentAsync(Student student);
         Task<Student> UpdateStudentAsync(Student student);
         Task <Student> DeleteStudentAsync(int Id);
         Task<int> TotalStudentCountAsync();
         Task<int> GetTotalCountAsyncForFilter(string? search, int? classId, int? gradeId);
+        
+        Task<int> TotalBoyCountAsync();
+        Task<int> TotalGirlCountAsync();
 
 
     }

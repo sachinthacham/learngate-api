@@ -10,5 +10,7 @@ namespace learngate_api.Contracts
         Task<Event> UpdateEventAsync(Event newclass);
         Task<Event> DeleteEventAsync(int id);
 
+        Task<List<Event>> GetRecentEventsAsync();
+
     }
 }

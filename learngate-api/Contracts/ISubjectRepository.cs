@@ -6,7 +6,8 @@ namespace learngate_api.Contracts
     {
         Task<List<Subject>> GetAllSubjectsAsync();
         Task<Subject?> GetSubjectByIdAsync(int Id);
-        Task<Subject> CreateSubjectAsync(Subject subject);
+        Task<Subject> CreateSubjectAsync(Subject subject, List<int> teacherIds);
+        
         Task<Subject> UpdateSubjectAsync(Subject subject);
         Task<Subject> DeleteSubjectAsync(int Id);
 
