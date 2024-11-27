@@ -34,6 +34,7 @@ namespace learngate_api.Repositories
         }
         public async Task<Class> CreateClassAsync(Class newclass)
         {
+            // Create the new class entity
             var ClassNew = new Class
             {
                 Name = newclass.Name,
@@ -41,10 +42,20 @@ namespace learngate_api.Repositories
                 SupervisorId = newclass.SupervisorId,
                 GradeId = newclass.GradeId,
             };
+
+            // Add and save the new class
             await _context.Classes.AddAsync(ClassNew);
             await _context.SaveChangesAsync();
-            return ClassNew;
+
+            // Reload the created class with navigation properties
+            var createdClass = await _context.Classes
+                .Include(c => c.Grade)       // Load the Grade navigation property
+                .Include(c => c.Supervisor) // Load the Supervisor navigation property
+                .FirstOrDefaultAsync(c => c.Id == ClassNew.Id);
+
+            return createdClass;
         }
+
         public async Task<Class> UpdateClassAsync(Class newclass)
         {
             _context.Classes.Update(newclass);

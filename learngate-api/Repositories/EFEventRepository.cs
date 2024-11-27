@@ -17,6 +17,11 @@ namespace learngate_api.Repositories
             return await _context.Events.Include(x => x.Class).ToListAsync();
         }
 
+        public async Task<List<Event>> GetRecentEventsAsync()
+        {
+            return await _context.Events.OrderByDescending(x => x.StartTime).Take(5).Include(x => x.Class).ToListAsync();
+        }
+
         public async Task<Event?> GetEventByIdAsync(int Id)
         {
             return await _context.Events.FirstOrDefaultAsync(x => x.Id == Id);

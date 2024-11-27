@@ -19,6 +19,20 @@ namespace learngate_api.Repositories
             return totalCount;
             
         }
+        public async Task<int> TotalBoyCountAsync()
+        {
+            var totalBoyCount = await _context.Students.Where(x => x.Sex == UserSex.Male).CountAsync();
+            return totalBoyCount;
+
+        }
+        public async Task<int> TotalGirlCountAsync()
+        {
+            var totalGirlCount = await _context.Students.Where(x => x.Sex == UserSex.Female).CountAsync();
+            return totalGirlCount;
+
+        }
+
+
         public async Task<List<Student>> GetAllStudentsAsync(
             string? search,
             int? classId,
@@ -87,29 +101,16 @@ namespace learngate_api.Repositories
 
 
 
-        public async Task<Student?> GetStudentByIdAsync(int Id)
+        public async Task<Student?> GetStudentByIdAsync(string username)
         {
-            return await _context.Students.FirstOrDefaultAsync(x => x.Id == Id);
+            return await _context.Students.FirstOrDefaultAsync(x => x.UserName == username);
         }
         public async Task<Student> CreateStudentAsync(Student student)
         {
-            var newStudent = new Student {
-                UserName = student.UserName,
-                Name = student.Name,
-                Surname = student.Surname,
-                Email = student.Email,
-                Phone = student.Phone,
-                Address = student.Address,
-                Img = student.Img,
-                BloodType = student.BloodType,
-                GradeId = student.GradeId,
-                Sex = student.Sex,
-                ParentId = student.ParentId,
-                ClassId = student.ClassId,
-            };
-            await _context.Students.AddAsync(newStudent);
+           
+            await _context.Students.AddAsync(student);
             await _context.SaveChangesAsync();  
-            return newStudent;
+            return student;
         }
         public async Task<Student> UpdateStudentAsync(Student student)
         {
