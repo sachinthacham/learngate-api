@@ -55,6 +55,18 @@ namespace learngate_api.Mappers
 
             };
         }
+
+
+        public static GetByClassSubjectIdDto ToLessonsForSubjectDto(this Lesson lessonModel)
+        {
+            return new GetByClassSubjectIdDto
+            {
+                Id = lessonModel.Id,
+                Name = lessonModel.Name,
+                ClassSubjectId = lessonModel.ClassSubjectId,
+               
+            };
+        }
     }
 }
 

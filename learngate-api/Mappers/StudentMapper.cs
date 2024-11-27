@@ -66,6 +66,27 @@ namespace learngate_api.Mappers
 
             };
         }
+
+        public static getStudentProfileDataDto ToStudentProfileDto(this Student studentModel)
+        {
+            return new getStudentProfileDataDto
+            {
+                Id = studentModel.Id,
+                UserName = studentModel.UserName,
+                Name = studentModel.Name,
+                Surname = studentModel.Surname,
+                Email = studentModel.Email,
+                Phone = studentModel.Phone,
+                Address = studentModel.Address,
+                Img = studentModel.Img,
+                BloodType = studentModel.BloodType,
+                Sex = studentModel.Sex,
+               
+
+
+            };
+
+        }
     }
 }
 
