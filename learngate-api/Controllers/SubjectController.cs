@@ -55,8 +55,26 @@ namespace learngate_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
         
+
+        [HttpGet]
+        [Route("getNames")]
+         public async Task<IActionResult> GetAllSubjectNames()
+        {
+            try
+            {
+                var subjects = await _subjectRepository.GetAllSubjectNames();
+                var subjectsDto = subjects.Select(s => s.ToSubjectNameDto());
+                return Ok(subjectsDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
 
         [HttpPost]
         [Route("create")]

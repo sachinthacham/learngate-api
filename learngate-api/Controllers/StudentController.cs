@@ -91,6 +91,27 @@ namespace learngate_api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+
+        [HttpGet]
+        [Route("getNames")]
+
+        public async Task<IActionResult> GetStudentNames()
+        {
+            try
+            {
+                var students = await _studentRepository.GetStudentName();
+                if (students == null)
+                {
+                    return NotFound("There are no students");
+                }
+                return Ok(students.Select(s => s.ToStudentNameDto()));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPut]
         [Route("update/{Id}")]

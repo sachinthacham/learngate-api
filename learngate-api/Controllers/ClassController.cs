@@ -81,7 +81,7 @@ namespace learngate_api.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
+        [Route("create")] 
 
         public async Task<IActionResult> CreateClass([FromBody] CreateClassDto classDto)
         {

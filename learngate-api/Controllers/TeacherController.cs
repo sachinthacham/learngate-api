@@ -73,18 +73,40 @@ namespace learngate_api.Controllers
         }
 
         [HttpGet]
-        [Route("getby/{Id}")]
+        [Route("getby/{username}")]
 
-        public async Task<IActionResult> GetTeacherById(int Id)
+        public async Task<IActionResult> GetTeacherById(string username)
         {
             try
             {
-                var teacher = await _teacherRepository.GetTeacherByIdAsync(Id);
+                var teacher = await _teacherRepository.GetTeacherByIdAsync(username);
                 if(teacher == null)
                 {
                     return NotFound();
                 }
                 return Ok(teacher);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+      
+
+        [HttpGet]
+        [Route("GetTeacherNames")]
+        
+
+          public async Task<IActionResult> GetAllStudent()
+      
+        {
+            try
+            {
+                var allTeacherNames = await _teacherRepository.GetTeacherNames();
+
+                var teacherDtos = allTeacherNames.Select(s => s.ToTeacherNameDto());
+
+                return Ok(teacherDtos);
             }
             catch (Exception ex)
             {
@@ -114,11 +136,11 @@ namespace learngate_api.Controllers
         [HttpPut]
         [Route("update/{Id}")]
 
-        public async Task<IActionResult> UpdateTeacher([FromRoute] int Id, [FromBody] UpdateTeacherDto updateDto)
+        public async Task<IActionResult> UpdateTeacher([FromRoute] string username, [FromBody] UpdateTeacherDto updateDto)
         {
             try
             {
-                var excistingModel = await _teacherRepository.GetTeacherByIdAsync(Id);
+                var excistingModel = await _teacherRepository.GetTeacherByIdAsync(username);
                 if (excistingModel == null)
                 {
                     return NotFound("There are no teacher found");

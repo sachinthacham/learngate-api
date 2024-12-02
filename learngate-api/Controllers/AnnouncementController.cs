@@ -38,6 +38,23 @@ namespace learngate_api.Controllers
         }
 
         [HttpGet]
+        [Route("getRecent")]
+        public async Task<IActionResult> GetRecentAnnouncementsAsync()
+        {
+            try
+            {
+                var allAnnouncements = await _announcementRepository.GetRecentAnnouncementsAsync();
+                var AnnouncementDto = allAnnouncements.Select(s => s.ToAnnouncementDto());
+                return Ok(AnnouncementDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpGet]
         [Route("getby/{Id}")]
 
         public async Task<IActionResult> GetAnnouncementById(int Id)
