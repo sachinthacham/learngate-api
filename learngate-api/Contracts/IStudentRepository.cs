@@ -18,6 +18,7 @@ namespace learngate_api.Contracts
         
         Task<int> TotalBoyCountAsync();
         Task<int> TotalGirlCountAsync();
+        Task<List<Student>> GetStudentName();
 
 
     }

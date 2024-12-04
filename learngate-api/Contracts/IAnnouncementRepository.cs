@@ -9,5 +9,6 @@ namespace learngate_api.Contracts
         Task<Announcement> CreateAnnouncementAsync(Announcement newAnnouncement);
         Task<Announcement> UpdateAnnouncementAsync(Announcement newAnnouncement);
         Task <Announcement> DeleteAnnouncementAsync(int id);
+        Task<List<Announcement>> GetRecentAnnouncementsAsync();
     }
 }
