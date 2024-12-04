@@ -29,6 +29,9 @@
 
         public List<Attendance> Attendances { get; set; }
 
+        public ClassSubject ClassSubject { get; set; }
+        public int ClassSubjectId { get; set; }
+
 
     }
 }

@@ -33,7 +33,7 @@
         public List<Attendance> Attendances { get; set; } = new List<Attendance>();
 
         public List<Result> Results { get; set; } = new List<Result>();
-        //public List<Assignment> Assignment { get; set; }
+        
     
     }
 }
