@@ -16,5 +16,6 @@ namespace learngate_api.Contracts
         Task<IEnumerable<Subject>> GetSubjectsByTeacherIdAsync(int teacherId);
         Task<int> GetTeacherCountAsync();
         Task<int> GetTotalCountAsyncForFilter(string? search, int? subjectId);
+        Task<List<Teacher>> GetTeacherNames();
     }
 }
