@@ -12,5 +12,7 @@ namespace learngate_api.Contracts
         Task<Subject> DeleteSubjectAsync(int Id);
 
         Task<IEnumerable<Teacher>> GetTeachersBySubjectIdAsync(int subjectId);
+
+        Task <List<Subject>> GetAllSubjectNames();
     }
 }
